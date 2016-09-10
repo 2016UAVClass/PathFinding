@@ -201,7 +201,7 @@ def createTraps():
                 (105, 35)
             ]
         ]
-
+    print "transforming zone"
     zone = shapely.geometry.Polygon(zone)
     obstacles = [shapely.geometry.Polygon(o) for o in obstacles]
     obstacles1 = []
@@ -217,8 +217,10 @@ def createTraps():
         zone1 = zone.buffer(-1 * abs(bufAmt))
         for obstacle in obstacles:
             obstacles1 = obstacles1 + [obstacle.buffer(abs(bufAmt))]
-    tz = trapzone.TrapZone(zone1, obstacles1, radius)
 
+        tz = trapzone.TrapZone(zone1, obstacles1, radius)
+    else:
+        tz = trapzone.TrapZone(zone, obstacles, radius)
     # Store the corners of the buffered square
     bounds1 = zone1.bounds
     rect1 = shapely.geometry.Polygon(
@@ -231,9 +233,8 @@ def createTraps():
     )
 
     # Obtain the locations of the traps
-    allPoints = tz.genPoints()
-    traps = allPoints[0]  # THIS NEEDS TO BE PUBLISHED
-    outerTraps = allPoints[1]
+    traps = tz.genPoints()
+
 
     # Prepare the window that will display the map
     root = tk.Tk()
@@ -249,8 +250,7 @@ def createTraps():
     for obstacle in obstacles:
         t2.draw_poly(obstacle, canvas, 'blue')
     trapzone.drawPoints(canvas, traps, 3, 'green')
-    trapzone.drawPoints(canvas, outerTraps, 3, 'white')
-
+    print traps
     root.mainloop()
 
     ros_response = raw_input('Do you want to publish to ROS [y/n]: ')

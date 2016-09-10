@@ -45,6 +45,7 @@ def createZone(can_fly, zone_name, **kwargs):
     done=False
     pts=[]
     numpts=getInt("How many points are there?")
+    print
     for i in range(numpts):
         pts.append(getPoint())
 

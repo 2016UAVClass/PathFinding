@@ -60,20 +60,19 @@ class TrapZone(object):
         return points
 
     def pointsInZone(self, points):
-        resultList = [[], []]
+        print "in zone"
+        print points
+        print "\n\n"
+        trap_locs = []
         for x in points:
-            if self.zone.contains(shapely.geometry.Point(x)):
-                if self.obstacles:
-                    for obstacle in self.obstacles:
-                        if not obstacle.contains(shapely.geometry.Point(x)):
-                            resultList[0] = resultList[0] + [x]
-                        else:
-                            resultList[1] = resultList[1] + [x]
-                else:
-                    resultList[0] = resultList[0] + [x]
-            else:
-                resultList[1] = resultList[1] + [x]
-        return resultList
+            ptx = shapely.geometry.Point(x)
+            if self.zone.contains(ptx):
+                if not self.obstacles:
+                    trap_locs.append(x)
+                elif all([not obs.contains(ptx) for obs in self.obstacles]):
+                    trap_locs.append(x)
+                    
+        return trap_locs
 
 
 def drawPoints(canvas, points, size, color):
