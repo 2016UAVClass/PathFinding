@@ -3,6 +3,7 @@
 # points of the polygon and the number of traps to be placed down. 
 
 import shapely
+import shapely.geometry as sg
 import math
 import random
 
@@ -60,9 +61,6 @@ class TrapZone(object):
         return points
 
     def pointsInZone(self, points):
-        print "in zone"
-        print points
-        print "\n\n"
         trap_locs = []
         for x in points:
             ptx = shapely.geometry.Point(x)
@@ -71,7 +69,25 @@ class TrapZone(object):
                     trap_locs.append(x)
                 elif all([not obs.contains(ptx) for obs in self.obstacles]):
                     trap_locs.append(x)
-                    
+            else:
+                #so point not in zone, look to where it can be placed
+                #calculate closest point on zone border
+                zone = self.zone
+                d=zone.boundary.project(ptx)
+                cp = zone.boundary.interpolate(d)
+                #now move cp off the border
+                OFFSET = 5
+                #move new_point offset units into polygon
+                new_point = sg.Point(cp.x + math.copysign(OFFSET, cp.x-ptx.x),
+                                     cp.y + math.copysign(OFFSET, cp.y-ptx.y))
+                #if the new point is at least half a radius from all other trap locations, add it
+                dists = [new_point.distance(sg.Point(tl[0], tl[1])) for tl in trap_locs]
+                if all([d > self.radius/2. for d in dists]):
+                    print "min dist", min(dists)
+                    trap_locs.append([new_point.x, new_point.y])
+                
+                
+                
         return trap_locs
 
 
