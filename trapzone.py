@@ -75,16 +75,17 @@ class TrapZone(object):
                 zone = self.zone
                 d=zone.boundary.project(ptx)
                 cp = zone.boundary.interpolate(d)
-                #now move cp off the border
-                OFFSET = 5
-                #move new_point offset units into polygon
-                new_point = sg.Point(cp.x + math.copysign(OFFSET, cp.x-ptx.x),
-                                     cp.y + math.copysign(OFFSET, cp.y-ptx.y))
-                #if the new point is at least half a radius from all other trap locations, add it
-                dists = [new_point.distance(sg.Point(tl[0], tl[1])) for tl in trap_locs]
-                if all([d > self.radius/2. for d in dists]):
-                    print "min dist", min(dists)
-                    trap_locs.append([new_point.x, new_point.y])
+                if cp.distance(ptx)<self.radius: #only move if moving less than a trap's area away
+                    #now move cp off the border
+                    OFFSET = 5
+                    #move new_point offset units into polygon
+                    new_point = sg.Point(cp.x + math.copysign(OFFSET, cp.x-ptx.x),
+                                         cp.y + math.copysign(OFFSET, cp.y-ptx.y))
+                    #if the new point is at least half a radius from all other trap locations, add it
+                    dists = [new_point.distance(sg.Point(tl[0], tl[1])) for tl in trap_locs]
+                    if all([d > self.radius/2. for d in dists]):
+                        print "min dist", min(dists)
+                        trap_locs.append([new_point.x, new_point.y])
                 
                 
                 
