@@ -57,7 +57,7 @@ if __name__ == '__main__':
 
     # extract the fly zone
     if "fly_zone" in mapobj:
-        zone = mapobj["fly_zone"]
+        zone = mapobj["fly_zone"]["bounds"]
     else:
         print "error, could not find zone called 'fly_zone'"
         sys.exit()
@@ -66,7 +66,7 @@ if __name__ == '__main__':
     obstacles = []
     for k in mapobj.keys():
         if k == "obstacle":
-            obstacles.append(mapobj[k].bounds)
+            obstacles.append(mapobj[k]["bounds"])
 
     _, trap_points = maintrap.place_traps(zone, obstacles, args.radius, args.buffer_size)
     warehouse = sg.Point(args.warehouse)

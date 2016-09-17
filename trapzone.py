@@ -89,7 +89,7 @@ class TrapZone(object):
                 
                 
                 
-        return trap_locs
+        return trap_locs, trap_loc_pts
 
 
 def drawPoints(canvas, points, size, color):

@@ -1,1 +1,78 @@
-{"StartPoint0": {"type": "start_point", "point": [10, 10], "vehicle_i": 0}, "StartPoint1": {"type": "start_point", "point": [15, 20], "vehicle_i": 1}, "nf1": {"type": "zone", "bounds": [[50, 50], [50, 70], [60, 50]], "flight_legal": false}, "Waypoint1": {"vehicle_i": 1, "type": "waypoint", "index": 1, "center": [70, 70], "radius": 5}, "Waypoint2": {"vehicle_i": 0, "type": "waypoint", "index": 1, "center": [70, 15], "radius": 5}, "fly_zone": {"type": "zone", "bounds": [[0,0], [0, 100], [100, 100], [100,0]], "flight_legal": true}}
+{
+  "StartPoint0": {
+    "type": "start_point",
+    "point": [
+      10,
+      10
+    ],
+    "vehicle_i": 0
+  },
+  "StartPoint1": {
+    "type": "start_point",
+    "point": [
+      15,
+      20
+    ],
+    "vehicle_i": 1
+  },
+  "nf1": {
+    "type": "zone",
+    "bounds": [
+      [
+        50,
+        50
+      ],
+      [
+        50,
+        70
+      ],
+      [
+        60,
+        50
+      ]
+    ],
+    "flight_legal": false
+  },
+  "Waypoint1": {
+    "vehicle_i": 1,
+    "type": "waypoint",
+    "index": 1,
+    "center": [
+      70,
+      70
+    ],
+    "radius": 5
+  },
+  "Waypoint2": {
+    "vehicle_i": 0,
+    "type": "waypoint",
+    "index": 1,
+    "center": [
+      70,
+      15
+    ],
+    "radius": 5
+  },
+  "fly_zone": {
+    "type": "zone",
+    "bounds": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        100
+      ],
+      [
+        100,
+        100
+      ],
+      [
+        100,
+        0
+      ]
+    ],
+    "flight_legal": true
+  }
+}
