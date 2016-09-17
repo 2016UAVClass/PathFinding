@@ -48,7 +48,7 @@ if __name__ == '__main__':
 
     parser.add_argument("--wp_acc",
                         help="the radius on each waypoint (how close to the actual center must the vehicle be) Default: %(default)s",
-                        type=float, default=10)
+                        type=float, default=2)
 
     args = parser.parse_args()
 
@@ -75,7 +75,7 @@ if __name__ == '__main__':
     # add start points for all UAVs as the warehouse (or just outside it)
     for i in range(args.num_uavs):
         sp = {"type": "start_point",
-              "point": [warehouse.x + args.gap, warehouse.y],
+              "point": [warehouse.x + args.gap*i, warehouse.y],
               "vehicle_i": i}
         mapobj["StartPoint"] = sp
 

@@ -18,7 +18,7 @@ def createPathFromFile(filename):
         return None
 
 #creates a path from the given map object (the parsed contents of the map generation script)
-def createPathFromMap(mapobj, vehicle_size=5, height_gap = -1):
+def createPathFromMap(mapobj, vehicle_size=1, height_gap = -1):
     obstacles=[]
     waypoints_l=[] 
     start_points=[] 
