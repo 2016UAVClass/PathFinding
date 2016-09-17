@@ -11,13 +11,6 @@ import random
 # The TrapZone class represents the area that traps need to be distributed
 # in. It is assumed that the entire TrapZone is a fly-zone. 
 class TrapZone(object):
-    # zone - The polygon that specifies the area for placing traps
-    # num_traps - the number of traps to be distributed
-    # bufAmt - specifies how much to erode the polygon. Basically, it answers
-    #         ...the question of how safe you want to be regarding how close
-    #         ... the traps get to the no-fly zone.
-    # erode - a boolean specifying whether the polygon should shrink a bit
-    #         ...to ensure that traps aren't place close to the no-fly zones.
     def __init__(self, zone, obstacles, radius):
         self.zone = zone
         self.obstacles = obstacles
@@ -28,11 +21,7 @@ class TrapZone(object):
     # rectangle that surrounds the polygon. Then it evenly distributes 
     # points inside that rectangle. Then, the program iterates through
     # all of the points and only keeps the ones that are contained inside
-    # the polygon. If the number of traps that are kept is less than the 
-    # number of traps specified by the user, then the process repeats with 
-    # a denser distribution of traps in the rectangle. If there are more 
-    # traps in the polygon than the user specified, then the extras are 
-    # randomly removed. 
+    # the polygon.
     def genPoints(self):
         bounds = self.zone.bounds  # get the corners of the rectangle that contain the Polygon
         width = math.ceil(bounds[2] - bounds[0])

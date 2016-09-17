@@ -34,8 +34,9 @@ if __name__ == '__main__':
     parser.add_argument("warehouse", help="Location of the warehouse, specified as 2 doubles (ex: 72.3 92.4)",
                         type=float, nargs=2)
 
-    parser.add_argument("--num_traps", help="number of traps to distribute, if 0, then assume unlimited",
-                        type=int, default=0)
+    #this is not currently supported, as the rules do not specify this as a requirement
+    # parser.add_argument("--num_traps", help="number of traps to distribute, if 0, then assume unlimited",
+    #                     type=int, default=0)
 
     parser.add_argument("--gap", help="the minimum gap between UAVs. Default: %(default)s", default=5,
                         type=float)
@@ -82,30 +83,35 @@ if __name__ == '__main__':
     # sort the traps by the distance from the warehouse
     def sort_key(point):
         return point.distance(warehouse)
-
-
     trap_points.sort(key=sort_key)
 
-    vehicle_i = 0
-    waypoint_num = [0 for i in range(args.num_uavs)]
 
+    #generate the paths for the vehicles
+    #currently traps are assigned round-robin style
+    vehicle_i = 0 #what vehicle should we ass
+    waypoint_num = [0 for i in range(args.num_uavs)] #what waypoint number we are on for each vehicle
+    wps = []
+    #adds a waypoint centered at trap to the map object
     def add_wp(trap):
         wp = {"type": "waypoint",
               "center": to_list(trap),
               "radius": args.wp_acc,
               "index": waypoint_num[vehicle_i],
               "vehicle_i": vehicle_i}
+        mapobj["wp"+str(vehicle_i)+str(waypoint_num)]=wp
         waypoint_num[vehicle_i] += 1
-        mapobj["wp"]=wp
+        wps.append(wp["center"])
 
+    #adds the warehouse to path of the current vehicle
     def add_warehouse():
         add_wp(warehouse)
-        vehicle_i= (vehicle_i+1) %args.num_uavs #cycle the vehicle index to the next one
 
     for trap in trap_points:
         add_wp(trap)
         add_warehouse() #must return to warehouse before going out again
+        vehicle_i = (vehicle_i + 1) % args.num_uavs  # cycle the vehicle index to the next one
 
     paths = map_to_path.createPathFromMap(mapobj, height_gap=args.gap)
 
+    print paths
     #deal with paths!
