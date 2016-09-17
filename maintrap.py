@@ -3,25 +3,25 @@ import t2
 import trapzone
 import shapely
 import math
-import rospy
-from geometry_msgs.msg import Point
+# import rospy
+# from geometry_msgs.msg import Point
 
 
 # Publish location of traps to ROS
-def talker(traps):
-    pub = rospy.Publisher('traps', Point, queue_size=10)
-    rospy.init_node('trap_talker', anonymous=True)
-    rate = rospy.Rate(10)  # 10hz
-    messages = []
-    for trap in traps:
-        message = Point(trap[0], trap[1], 0)
-    messages.append(message)
-
-    while not rospy.is_shutdown():
-        for msg in messages:
-            rospy.loginfo(msg)
-            pub.publish(msg)
-            rate.sleep()
+# def talker(traps):
+#     pub = rospy.Publisher('traps', Point, queue_size=10)
+#     rospy.init_node('trap_talker', anonymous=True)
+#     rate = rospy.Rate(10)  # 10hz
+#     messages = []
+#     for trap in traps:
+#         message = Point(trap[0], trap[1], 0)
+#     messages.append(message)
+#
+#     while not rospy.is_shutdown():
+#         for msg in messages:
+#             rospy.loginfo(msg)
+#             pub.publish(msg)
+#             rate.sleep()
 
 
 def createTraps():
@@ -204,25 +204,31 @@ def createTraps():
             ]
         ]
     print "transforming zone"
+
+
+    ros_response = raw_input('Do you want to publish to ROS [y/n]: ')
+    # if ros_response == "y":
+    #     talker(traps)  # Publishing to ROS
+
+
+def place_traps(zone, obstacles, radius, buffer_amt):
     zone = shapely.geometry.Polygon(zone)
     obstacles = [shapely.geometry.Polygon(o) for o in obstacles]
     obstacles1 = []
-
-    # Obtain input from the user and create instance of TrapZone
-    radius = input('Enter trap coverage radius: ')
-    response = raw_input(
-        'Would you like to shrink the zone to ensure traps do not get placed to close to no-fly zones? [y/n]: ')
     zone1 = zone
-    if response == "y":
+    if buffer_amt:
         erode = True
-        bufAmt = input('What is the minimum distance between a trap and an obstacle or the edge of the fly zone?: ')
-        zone1 = zone.buffer(-1 * abs(bufAmt))
+
+        zone1 = zone.buffer(-1 * abs(buffer_amt))
         for obstacle in obstacles:
-            obstacles1 = obstacles1 + [obstacle.buffer(abs(bufAmt))]
+            obstacles1 = obstacles1 + [obstacle.buffer(abs(buffer_amt))]
 
         tz = trapzone.TrapZone(zone1, obstacles1, radius)
     else:
         tz = trapzone.TrapZone(zone, obstacles, radius)
+
+
+
     # Store the corners of the buffered square
     bounds1 = zone1.bounds
     rect1 = shapely.geometry.Polygon(
@@ -235,8 +241,7 @@ def createTraps():
     )
 
     # Obtain the locations of the traps
-    traps = tz.genPoints()
-
+    traps, trap_points = tz.genPoints()
 
     # Prepare the window that will display the map
     root = tk.Tk()
@@ -252,12 +257,10 @@ def createTraps():
     for obstacle in obstacles:
         t2.draw_poly(obstacle, canvas, 'blue')
     trapzone.drawPoints(canvas, traps, 3, 'green')
-    
+
     root.mainloop()
 
-    ros_response = raw_input('Do you want to publish to ROS [y/n]: ')
-    if ros_response == "y":
-        talker(traps)  # Publishing to ROS
+    return trap_points
 
 
 if __name__ == '__main__':
