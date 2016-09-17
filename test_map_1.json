@@ -1,2 +1,58 @@
-{"Waypoint2": {"vehicle_i": 0, "radius": 4, "type": "waypoint", "center": [120, 60], "index": 2}, "Waypoint1": {"vehicle_i": 0, "radius": 4, "type": "waypoint", "center": [75, 120], "index": 1}, 
-"Waypoint3": {"vehicle_i": 0, "radius": 4, "type": "waypoint", "center": [190, 110], "index": 3}, "nf1": {"bounds": [[100, 100], [150, 100], [120, 80]], "type": "zone", "flight_legal": false}, "StartPoint0": {"type": "start_point", "point": [10, 10], "vehicle_i": 0}}
+{
+  "Waypoint2": {
+    "vehicle_i": 0,
+    "radius": 4,
+    "type": "waypoint",
+    "center": [
+      120,
+      60
+    ],
+    "index": 2
+  },
+  "Waypoint1": {
+    "vehicle_i": 0,
+    "radius": 4,
+    "type": "waypoint",
+    "center": [
+      75,
+      120
+    ],
+    "index": 1
+  },
+  "Waypoint3": {
+    "vehicle_i": 0,
+    "radius": 4,
+    "type": "waypoint",
+    "center": [
+      190,
+      110
+    ],
+    "index": 3
+  },
+  "nf1": {
+    "bounds": [
+      [
+        100,
+        100
+      ],
+      [
+        150,
+        100
+      ],
+      [
+        120,
+        80
+      ]
+    ],
+    "type": "zone",
+    "flight_legal": false
+  },
+  "StartPoint0": {
+    "type": "start_point",
+    "point": [
+      10,
+      10
+    ],
+    "vehicle_i": 0
+  }
+}

@@ -62,13 +62,13 @@ class TrapZone(object):
 
     def pointsInZone(self, points):
         trap_locs = []
+        trap_loc_pts = []
         for x in points:
             ptx = shapely.geometry.Point(x)
             if self.zone.contains(ptx):
-                if not self.obstacles:
+                if not self.obstacles or all([not obs.contains(ptx) for obs in self.obstacles]):
                     trap_locs.append(x)
-                elif all([not obs.contains(ptx) for obs in self.obstacles]):
-                    trap_locs.append(x)
+                    trap_loc_pts.append(ptx)
             else:
                 #so point not in zone, look to where it can be placed
                 #calculate closest point on zone border
@@ -84,8 +84,8 @@ class TrapZone(object):
                     #if the new point is at least half a radius from all other trap locations, add it
                     dists = [new_point.distance(sg.Point(tl[0], tl[1])) for tl in trap_locs]
                     if all([d > self.radius/2. for d in dists]):
-                        print "min dist", min(dists)
                         trap_locs.append([new_point.x, new_point.y])
+                        trap_loc_pts.append(new_point)
                 
                 
                 

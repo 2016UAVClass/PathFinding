@@ -205,8 +205,13 @@ def createTraps():
         ]
     print "transforming zone"
 
+    # Obtain input from the user and create instance of TrapZone
+    radius = input('Enter trap coverage radius: ')
+    response = int(raw_input("Enter the buffer amount for the traps: "))
 
     ros_response = raw_input('Do you want to publish to ROS [y/n]: ')
+
+    traps, trap_points = place_traps(zone, obstacles, radius, )
     # if ros_response == "y":
     #     talker(traps)  # Publishing to ROS
 
@@ -215,6 +220,8 @@ def place_traps(zone, obstacles, radius, buffer_amt):
     zone = shapely.geometry.Polygon(zone)
     obstacles = [shapely.geometry.Polygon(o) for o in obstacles]
     obstacles1 = []
+
+
     zone1 = zone
     if buffer_amt:
         erode = True
@@ -260,7 +267,7 @@ def place_traps(zone, obstacles, radius, buffer_amt):
 
     root.mainloop()
 
-    return trap_points
+    return traps, trap_points
 
 
 if __name__ == '__main__':

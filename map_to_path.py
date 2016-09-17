@@ -18,12 +18,12 @@ def createPathFromFile(filename):
         return None
 
 #creates a path from the given map object (the parsed contents of the map generation script)
-def createPathFromMap(mapobj):
+def createPathFromMap(mapobj, vehicle_size=5, height_gap = -1):
     obstacles=[]
     waypoints_l=[] 
     start_points=[] 
-    vehicle_size=5 #TODO
-    HEIGHT_CONSTANT=3*vehicle_size
+    if height_gap==-1:
+        height_gap=3*vehicle_size
     fly_zone=[]
     DFS = 300 #default flyzone size. If no flyzone provided, set to a square this big
     for name, vals in mapobj.items():
@@ -83,7 +83,7 @@ def createPathFromMap(mapobj):
             #print(waypoints_l[vi])
             sp=path_list[-1] #our starting point is the most recent position we were in
             path_list+=graph.find_path(sp, wp)[1:] #first point is the start point for this iteration, chop it off
-        paths.append(transform_path_3d(path_list, HEIGHT_CONSTANT*(vi+1)))
+        paths.append(transform_path_3d(path_list, height_gap*(vi+1)))
     return paths 
 
 #changes a path in (x,y) to be in (x,y,z) where z=height
